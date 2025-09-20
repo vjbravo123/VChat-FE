@@ -1,0 +1,56 @@
+.search{
+   text-align: center;
+   padding: 20px;
+}
+.search input{
+  font-size: large;
+  width: 30%;
+  padding: 10px;
+}
+.search button{
+  padding: 13px;
+  margin: 10px;
+}
+
+.users ul li{
+  width: 70%;
+  height: 50%;
+  background-color: lightblue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 100px;
+  font-size: large;
+}
+
+.users button{
+  font-size: large;
+  padding: 10px;
+  border-radius: 5px;
+  background-color:white;
+}
+
+.friends ul{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.friends ul li{
+  font-size: large;
+}
+.friend{
+  border-radius: 5px; 
+    border: 1px solid brown;
+    padding: 20px;
+    box-shadow: 2px 2px 5px brown;
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.friend button{
+  border-radius: 5px;
+  background-color:mistyrose;
+  height: 5%;
+  padding: 10px;
+}

@@ -1,0 +1,56 @@
+import { Link, useNavigate } from "react-router-dom";
+import img from "../assets/logo.png"
+import { useState } from "react";
+import "../css/login.css"
+const Login = () => {
+  const navigate = useNavigate();
+  const [username , setUsername] = useState("");
+  const [password , setPassword] = useState("");
+  async function handleLogin() {
+  const resp = await fetch("http://localhost:5000/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+
+  const data = await resp.json();
+
+  if (data.validUser) {
+    // Save user data
+    console.log(data);
+    
+    localStorage.setItem("user", JSON.stringify(data.user));
+    navigate("/chatlist");
+  } else {
+    alert(data.message);
+  }
+}
+
+
+  return (
+      <>
+    <div className="home">
+    <div className="login">
+
+      <div className="logo">
+        <img src={img} alt="" />
+      </div>
+      <input type="text" name="username" id="" placeholder="Username" onChange={(e)=>{setUsername(e.target.value)}}/>
+      <input type="password" name="password" id="" placeholder="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
+      <button onClick={handleLogin}>Login</button>
+
+      <div className="or">--------------------     OR     --------------------</div>
+
+    <div className="forgot">Forgot password?</div>
+    <div className="signup">
+      <p>Don't have an account? </p> 
+      <Link to={"/signup"}>Sign Up</Link>
+    </div>
+    </div>
+    </div>
+
+    </>
+  )
+}
+
+export default Login
