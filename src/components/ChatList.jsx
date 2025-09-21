@@ -3,6 +3,7 @@ import "../css/ChatList.css";
 import { useNavigate } from "react-router-dom";
 
 const ChatList = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [friends, setFriends] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [username, setUsername] = useState("");
@@ -13,7 +14,7 @@ const ChatList = () => {
 
   // Fetch friends
   async function fetchFriends() {
-    const resp = await fetch(`http://localhost:5000/friends/${currentUserId}`);
+    const resp = await fetch(`${apiUrl}/friends/${currentUserId}`);
     const data = await resp.json();
     setFriends(data.friends);
   }
@@ -22,7 +23,7 @@ const ChatList = () => {
   async function handleSearch() {
     if (searchtext.trim() === "") return;
     const resp = await fetch(
-      `http://localhost:5000/search?username=${searchtext}&currentUserId=${currentUserId}`
+      `${apiUrl}/search?username=${searchtext}&currentUserId=${currentUserId}`
     );
     const data = await resp.json();
     setSearchResult(data.users);
@@ -30,7 +31,7 @@ const ChatList = () => {
 
   // Add friend
   async function handleAddFriend(friendId) {
-    await fetch("http://localhost:5000/friend-add", {
+    await fetch(`${apiUrl}/friend-add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),
@@ -40,7 +41,7 @@ const ChatList = () => {
 
   // Start chat
   async function handleStartChat(friendId) {
-    const resp = await fetch("http://localhost:5000/conversations", {
+    const resp = await fetch(`${apiUrl}/conversations`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),
@@ -51,7 +52,7 @@ const ChatList = () => {
 
   // Remove friend
   async function handleRemoveFriend(friendId) {
-    await fetch("http://localhost:5000/friend-remove", {
+    await fetch(`${apiUrl}/friend-remove`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),

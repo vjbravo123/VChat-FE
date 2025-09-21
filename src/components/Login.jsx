@@ -6,8 +6,9 @@ const Login = () => {
   const navigate = useNavigate();
   const [username , setUsername] = useState("");
   const [password , setPassword] = useState("");
+  const apiUrl =import.meta.env.VITE_API_URL;
   async function handleLogin() {
-  const resp = await fetch("http://localhost:5000/login", {
+  const resp = await fetch(`${apiUrl}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
