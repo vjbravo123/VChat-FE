@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import "../css/ChatList.css";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 const ChatList = () => {
   const [friends, setFriends] = useState([]); // current friends
   const [searchResult, setSearchResult] = useState([]);
   const [username, setUsername] = useState("");
   const [searchtext, setText] = useState("");
-
+  const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const currentUserId = currentUser.id;
 
@@ -24,6 +24,8 @@ const ChatList = () => {
       `http://localhost:5000/search?username=${searchtext}&currentUserId=${currentUserId}`
     );
     const data = await resp.json();
+    console.log(data);
+    
     setSearchResult(data.users);
   }
 
@@ -35,6 +37,18 @@ const ChatList = () => {
       body: JSON.stringify({ userId: currentUserId, friendId }),
     });
     fetchFriends(); // refresh friends list
+  }
+
+   // Start chat
+  async function handleStartChat(friendId) {
+    const resp = await fetch("http://localhost:5000/conversations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: currentUserId, friendId }),
+    });
+
+    const conversation = await resp.json();
+    navigate(`/chat/${conversation._id}`); // ✅ real ObjectId
   }
 
   useEffect(() => {
@@ -83,9 +97,7 @@ const ChatList = () => {
           {friends.map((f) => {
             return <div key={f._id} className="friend">
                 <li >👤{f.username}</li>
-                <Link to={`/chat/${[currentUserId, f._id].sort().join("_")}`}>
-                  <button>Chat 💬</button>
-                </Link>
+                   <button onClick={() => handleStartChat(f._id)}>Chat 💬</button>
               </div>
 
           })}

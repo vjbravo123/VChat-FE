@@ -6,28 +6,21 @@ import "../css/chat.css";
 const socket = io("http://localhost:5000");
 
 const Chatpage = () => {
-  const { roomId } = useParams(); // e.g. "66ecfc45d5a8e2c0b3a1a91f_66ecfc8dd5a8e2c0b3a1a920"
+  const { roomId } = useParams(); // now this is Conversation._id
 
-  // get or generate username
-  const [username] = useState(() => {
-    const storedName = localStorage.getItem("username");
-    if (storedName) return storedName;
-
-    const newName = "User" + Math.floor(Math.random() * 1000);
-    localStorage.setItem("username", newName);
-    return newName;
-  });
+  const currentUser = JSON.parse(localStorage.getItem("user")); // contains _id, username
+  const currentUserId = currentUser?.id;
 
   const [msg, setMsg] = useState("");
   const [msgArr, setMsgArr] = useState([]);
 
   useEffect(() => {
     if (!roomId) return;
-    
-    // join the room
-    socket.emit("join_room", roomId);
 
-    // load old messages (from server/db)
+    // join the room
+    socket.emit("join_room", { roomId });
+
+    // load old messages
     socket.on("load_messages", (oldMessages) => {
       setMsgArr(oldMessages);
     });
@@ -37,7 +30,7 @@ const Chatpage = () => {
       setMsgArr((prev) => [...prev, msg]);
     });
 
-    // cleanup on unmount
+    // cleanup
     return () => {
       socket.emit("leave_room", roomId);
       socket.off("receive_message");
@@ -49,13 +42,9 @@ const Chatpage = () => {
     if (msg.trim() === "") return;
 
     const messageData = {
-      room: roomId,
-      sender: username,
+      room: roomId,          // conversationId
+      senderId: currentUserId, // ✅ only ObjectId string
       text: msg,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
     };
 
     socket.emit("send_message", messageData);
@@ -67,13 +56,18 @@ const Chatpage = () => {
       <div className="centerr">
         <div className="messages">
           <ul>
-            {msgArr.map((ele, idx) => (
+            {msgArr.map((ele) => (
               <li
-                key={idx}
-                className={ele.sender === username ? "right" : "left"}
+                key={ele._id}
+                className={ele.senderId._id === currentUserId ? "right" : "left"}
               >
                 <span className="msg-text">{ele.text}</span>
-                <span className="msg-time">{ele.time}</span>
+                <span className="msg-time">
+                  {new Date(ele.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
               </li>
             ))}
           </ul>
