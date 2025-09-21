@@ -63,7 +63,7 @@ const ChatList = () => {
   // Logout
   function handleLogout() {
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   }
 
   useEffect(() => {

@@ -17,7 +17,7 @@ const Signup = () => {
       const data = await resp.json();
       // console.log("Data from the server :" , data);
       if(data.userAdded){
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.log("Errro:",error);
@@ -40,7 +40,7 @@ const Signup = () => {
 
         <button type="submit">Register</button>
         <p className="signup-footer">
-          Already have an account? <Link to={"/login"}>Login</Link>
+          Already have an account? <Link to={"/"}>Login</Link>
         </p>
       </form>
     </div>
