@@ -1,6 +1,7 @@
 
 /* Center the form */
 .signup-container {
+  background-color: rgb(2, 2, 46);
   display: flex;
   justify-content: center;
   align-items: center;

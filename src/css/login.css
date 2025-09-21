@@ -1,63 +1,120 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.home{
+.home {
   height: 100vh;
-  background-color: rgb(6, 6, 35);
-}
-
-.login{
-  width: 25%;
-  margin: auto;
-  height: 80vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-}
-.login input{
-  border-radius: 5px;
-  width: 15em;
-  padding: 5px;
-  margin: 20px;
-  
+  background: linear-gradient(135deg, #060623, #0a1a40);
+  padding: 20px;
 }
 
-.login button{
-  border-radius: 5px;
+.login {
+  width: 100%;
+  max-width: 400px; /* responsive container */
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 255, 255, 0.1);
+  text-align: center;
+}
+
+.logo img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.login input {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+}
+
+.login input:focus {
+  box-shadow: 0 0 8px cyan;
+}
+
+.login button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  background: cyan;
+  color: #0a1a40;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.login button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.4);
+}
+
+.or {
+  margin: 20px 0;
+  color: #aaa;
+  font-size: 14px;
+  position: relative;
+}
+
+.or::before,
+.or::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background: #555;
+}
+
+.or::before {
+  left: 0;
+}
+
+.or::after {
+  right: 0;
+}
+
+.forgot {
+  margin-top: 10px;
+  color: #38bdf8;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+.signup {
   margin-top: 20px;
-  padding: 10px;
-  width: 50%;
-  color: white;
-  background-color:transparent;
-}
-.login button:hover{
-  transition: all 0.5 s;
-  box-shadow: 2px 2px 5px cyan;
-}
-
-.or{
-  margin-top: 30px;
-  color: white;
-}
-.forgot{
-  margin-top: 30px;
-  color: white;
-}
-
-.signup{
-  margin-top: 30px;
   display: flex;
-  color: white;
+  justify-content: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #eee;
 }
-.signup span{
-  color: rgb(63, 115, 133);
+
+.signup a {
+  color: cyan;
+  text-decoration: none;
+  font-weight: 600;
 }
-.login img{
-  width: 200px;
-  height: 200px;
+
+.signup a:hover {
+  text-decoration: underline;
 }

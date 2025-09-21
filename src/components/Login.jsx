@@ -39,7 +39,7 @@ const Login = () => {
       <input type="password" name="password" id="" placeholder="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
       <button onClick={handleLogin}>Login</button>
 
-      <div className="or">--------------------     OR     --------------------</div>
+      <div className="or">OR</div>
 
     <div className="forgot">Forgot password?</div>
     <div className="signup">

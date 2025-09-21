@@ -39,7 +39,7 @@ const Signup = () => {
 
         <button type="submit">Register</button>
         <p className="signup-footer">
-          Already have an account? <Link to={"/"}>Login</Link>
+          Already have an account? <Link to={"/login"}>Login</Link>
         </p>
       </form>
     </div>
