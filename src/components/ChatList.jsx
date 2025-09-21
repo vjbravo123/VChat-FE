@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../css/ChatList.css";
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+
 const ChatList = () => {
-  const [friends, setFriends] = useState([]); // current friends
+  const [friends, setFriends] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [username, setUsername] = useState("");
   const [searchtext, setText] = useState("");
@@ -10,7 +11,7 @@ const ChatList = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const currentUserId = currentUser.id;
 
-  // Fetch friends from server
+  // Fetch friends
   async function fetchFriends() {
     const resp = await fetch(`http://localhost:5000/friends/${currentUserId}`);
     const data = await resp.json();
@@ -24,31 +25,44 @@ const ChatList = () => {
       `http://localhost:5000/search?username=${searchtext}&currentUserId=${currentUserId}`
     );
     const data = await resp.json();
-    console.log(data);
-    
     setSearchResult(data.users);
   }
 
-  // Add friend directly
+  // Add friend
   async function handleAddFriend(friendId) {
     await fetch("http://localhost:5000/friend-add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),
     });
-    fetchFriends(); // refresh friends list
+    fetchFriends();
   }
 
-   // Start chat
+  // Start chat
   async function handleStartChat(friendId) {
     const resp = await fetch("http://localhost:5000/conversations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),
     });
-
     const conversation = await resp.json();
-    navigate(`/chat/${conversation._id}`); // ✅ real ObjectId
+    navigate(`/chat/${conversation._id}`);
+  }
+
+  // Remove friend
+  async function handleRemoveFriend(friendId) {
+    await fetch("http://localhost:5000/friend-remove", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: currentUserId, friendId }),
+    });
+    fetchFriends();
+  }
+
+  // Logout
+  function handleLogout() {
+    localStorage.removeItem("user");
+    navigate("/login");
   }
 
   useEffect(() => {
@@ -57,52 +71,77 @@ const ChatList = () => {
   }, []);
 
   return (
-    <div>
-      <h1>👤 {username}</h1>
+    <div className="chatlist-container">
+      {/* Header */}
+      <header className="chatlist-header">
+  <h1>👋 Welcome, {username}</h1>
+  <button className="logout-btn" onClick={handleLogout}>
+    🚪 Logout
+  </button>
+</header>
+
 
       {/* Search */}
-      <div className='search'>
+      <div className="search-box">
         <input
           type="text"
-          placeholder='Search users here...'
+          placeholder="🔍 Search users..."
           value={searchtext}
           onChange={(e) => setText(e.target.value)}
         />
         <button onClick={handleSearch}>Search</button>
       </div>
 
-      {/* Search results */}
-      <div className='users'>
-        <ul>
-          {searchResult.map((u) => (
-            <li key={u._id}>
-              <span>{u.username}</span>
-              {/* Disable button if already a friend */}
-              <button
-                disabled={friends.some(f => f._id === u._id)}
-                onClick={() => handleAddFriend(u._id)}
-              >
-                {friends.some(f => f._id === u._id) ? "Friend" : "Add Friend"}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Search Results */}
+      {searchResult.length > 0 && (
+        <div className="search-results">
+          <h3>🔎 Search Results</h3>
+          <div className="card-grid">
+            {searchResult.map((u) => (
+              <div key={u._id} className="user-card">
+                <span className="username">{u.username}</span>
+                <button
+                  disabled={friends.some((f) => f._id === u._id)}
+                  onClick={() => handleAddFriend(u._id)}
+                >
+                  {friends.some((f) => f._id === u._id)
+                    ? "✅ Friend"
+                    : "➕ Add Friend"}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Friends List */}
-      <div className='friends'>
-        <h3>Your Friends:</h3>
-
-        <ul>
-          {friends.map((f) => {
-            return <div key={f._id} className="friend">
-                <li >👤{f.username}</li>
-                   <button onClick={() => handleStartChat(f._id)}>Chat 💬</button>
+      <div className="friends-list">
+        <h3>👥 Your Friends</h3>
+        {friends.length === 0 ? (
+          <p className="empty">You don’t have any friends yet 😢</p>
+        ) : (
+          <div className="friends-grid">
+            {friends.map((f) => (
+              <div key={f._id} className="friend-card">
+                <div className="friend-info">
+                  <div className="avatar">{f.username.charAt(0).toUpperCase()}</div>
+                  <span className="username">{f.username}</span>
+                </div>
+                <div className="actions">
+                  <button className="chat-btn" onClick={() => handleStartChat(f._id)}>
+                    💬 Chat
+                  </button>
+                  <button
+                    className="remove-btn"
+                    onClick={() => handleRemoveFriend(f._id)}
+                  >
+                    ❌ Remove
+                  </button>
+                </div>
               </div>
-
-          })}
-        </ul>
-
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

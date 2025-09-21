@@ -16,7 +16,7 @@ const Signup = () => {
       const data = await resp.json();
       // console.log("Data from the server :" , data);
       if(data.userAdded){
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       console.log("Errro:",error);

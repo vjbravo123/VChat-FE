@@ -6,7 +6,7 @@ import ChatPage from './components/ChatPage.jsx'
 import ChatList from './components/ChatList.jsx'
 
 const router = createBrowserRouter([{
-  path:'/',
+  path:'/login',
   element:<App/>
 },
   {

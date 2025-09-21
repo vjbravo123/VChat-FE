@@ -1,56 +1,224 @@
-.search{
-   text-align: center;
-   padding: 20px;
-}
-.search input{
-  font-size: large;
-  width: 30%;
-  padding: 10px;
-}
-.search button{
-  padding: 13px;
-  margin: 10px;
+/* Dark theme base */
+.chatlist-container {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  background: #0f172a;
+  color: #e2e8f0;
+  min-height: 100vh;
 }
 
-.users ul li{
-  width: 70%;
-  height: 50%;
-  background-color: lightblue;
+/* Header */
+.chatlist-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+.chatlist-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+/* Search */
+.search-box {
   display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 220px;
+  max-width: 400px;
+  padding: 12px 16px;
+  border-radius: 25px;
+  border: 1px solid #334155;
+  font-size: 16px;
+  outline: none;
+  background: #1e293b;
+  color: #f8fafc;
+}
+.search-box input::placeholder {
+  color: #94a3b8;
+}
+
+.search-box button {
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-box button:hover {
+  background: #2563eb;
+}
+
+/* Grid Layout */
+.card-grid,
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+}
+
+/* Card styles */
+.user-card,
+.friend-card {
+  background: #1e293b;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column; /* Stack contents vertically */
   justify-content: space-between;
-  align-items: center;
-  padding: 30px 100px;
-  font-size: large;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.user-card:hover,
+.friend-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-.users button{
-  font-size: large;
-  padding: 10px;
-  border-radius: 5px;
-  background-color:white;
+/* Username */
+.username {
+  font-weight: 500;
+  color: #f1f5f9;
+  margin-bottom: 10px;
+  display: block;
+  word-break: break-word;
+  text-align: center;
 }
 
-.friends ul{
+/* Avatar */
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #3b82f6;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  font-weight: bold;
+  margin-right: 12px;
 }
-.friends ul li{
-  font-size: large;
+
+/* Friend info row */
+.friend-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
 }
-.friend{
-  border-radius: 5px; 
-    border: 1px solid brown;
-    padding: 20px;
-    box-shadow: 2px 2px 5px brown;
-  width: 30%;
+
+/* Buttons */
+.user-card button,
+.friend-card button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 100%;
+  margin-top: 6px;
+}
+.user-card button:disabled {
+  background: #475569;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Friend actions row */
+.friend-card .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap; /* Wrap on small screens */
+}
+
+.chat-btn {
+  background: #10b981;
+  color: white;
+  flex: 1;
+  min-width: 90px;
+}
+.chat-btn:hover {
+  opacity: 0.9;
+}
+
+.remove-btn {
+  background: #ef4444;
+  color: white;
+  flex: 1;
+  min-width: 90px;
+}
+.remove-btn:hover {
+  opacity: 0.9;
+}
+
+/* Section headers */
+.search-results h3,
+.friends-list h3 {
+  margin: 15px 0;
+  color: #38bdf8;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Empty state */
+.empty {
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .chatlist-header h1 {
+    font-size: 20px;
+  }
+  .chat-btn,
+  .remove-btn {
+    flex: 100%; /* Full width buttons on mobile */
+  }
+}
+
+.search-results{
+  margin-bottom: 100px;
+}
+
+/* Header as navbar */
+.chatlist-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 25px;
 }
-.friend button{
-  border-radius: 5px;
-  background-color:mistyrose;
-  height: 5%;
-  padding: 10px;
+
+.chatlist-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #38bdf8;
+  margin: 0;
+}
+
+/* Logout Button */
+.logout-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 25px;
+  background: #ef4444;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.logout-btn:hover {
+  background: #dc2626;
 }
