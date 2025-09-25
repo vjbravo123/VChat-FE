@@ -8,7 +8,7 @@ const Login = () => {
   const [password , setPassword] = useState("");
   const apiUrl =import.meta.env.VITE_API_URL;
   async function handleLogin() {
-  const resp = await fetch(`${apiUrl}/login`, {
+  const resp = await fetch(`${apiUrl}/api/user/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),

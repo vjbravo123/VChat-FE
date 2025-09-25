@@ -13,7 +13,7 @@
   margin-bottom: 25px;
 }
 .chatlist-header h1 {
-  font-size: 26px;
+
   font-weight: 600;
   color: #38bdf8;
 }
@@ -202,7 +202,6 @@
 }
 
 .chatlist-header h1 {
-  font-size: 26px;
   font-weight: 600;
   color: #38bdf8;
   margin: 0;
@@ -221,4 +220,15 @@
 }
 .logout-btn:hover {
   background: #dc2626;
+}
+
+@media (max-width:500px) {
+  .search-box{
+    margin: 50px 0px;
+  }
+}
+@media (max-width:450px) {
+  .search-box{
+    margin: 100px 0px;
+  }
 }

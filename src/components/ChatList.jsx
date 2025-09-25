@@ -14,7 +14,7 @@ const ChatList = () => {
 
   // Fetch friends
   async function fetchFriends() {
-    const resp = await fetch(`${apiUrl}/friends/${currentUserId}`);
+    const resp = await fetch(`${apiUrl}/api/friend/friends/${currentUserId}`);
     const data = await resp.json();
     setFriends(data.friends);
   }
@@ -23,7 +23,7 @@ const ChatList = () => {
   async function handleSearch() {
     if (searchtext.trim() === "") return;
     const resp = await fetch(
-      `${apiUrl}/search?username=${searchtext}&currentUserId=${currentUserId}`
+      `${apiUrl}/api/friend/search?username=${searchtext}&currentUserId=${currentUserId}`
     );
     const data = await resp.json();
     setSearchResult(data.users);
@@ -31,7 +31,7 @@ const ChatList = () => {
 
   // Add friend
   async function handleAddFriend(friendId) {
-    await fetch(`${apiUrl}/friend-add`, {
+    await fetch(`${apiUrl}/api/friend/friend-add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),
@@ -41,7 +41,7 @@ const ChatList = () => {
 
   // Start chat
   async function handleStartChat(friendId) {
-    const resp = await fetch(`${apiUrl}/conversations`, {
+    const resp = await fetch(`${apiUrl}/api/conversation/conversations`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),
@@ -52,7 +52,7 @@ const ChatList = () => {
 
   // Remove friend
   async function handleRemoveFriend(friendId) {
-    await fetch(`${apiUrl}/friend-remove`, {
+    await fetch(`${apiUrl}/api/friend/friend-remove`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: currentUserId, friendId }),

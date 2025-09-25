@@ -9,7 +9,7 @@ const Signup = () => {
   async function handleSubmit(e){
     e.preventDefault();
     try {
-      const resp = await fetch(`${apiUrl}/signup` , {
+      const resp = await fetch(`${apiUrl}/api/user/signup` , {
         method:'POST' ,
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify(formData)
