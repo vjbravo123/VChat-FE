@@ -17,10 +17,8 @@ const Login = () => {
   const data = await resp.json();
 
   if (data.validUser) {
-    // Save user data
-    console.log(data);
-    
     localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("token", JSON.stringify(data.token));
     navigate("/chatlist");
   } else {
     alert(data.message);
@@ -36,8 +34,8 @@ const Login = () => {
       <div className="logo">
         <img src={img} alt="" />
       </div>
-      <input type="text" name="username" id="" placeholder="Username" onChange={(e)=>{setUsername(e.target.value)}}/>
-      <input type="password" name="password" id="" placeholder="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
+      <input type="text" name="username"  placeholder="Username" onChange={(e)=>{setUsername(e.target.value)}}/>
+      <input type="password" name="password"  placeholder="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
       <button onClick={handleLogin}>Login</button>
 
       <div className="or">OR</div>

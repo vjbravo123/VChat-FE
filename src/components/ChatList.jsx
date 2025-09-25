@@ -14,7 +14,20 @@ const ChatList = () => {
 
   // Fetch friends
   async function fetchFriends() {
-    const resp = await fetch(`${apiUrl}/api/friend/friends/${currentUserId}`);
+    const token = JSON.parse(localStorage.getItem("token")); // get token from localStorage
+
+    const resp = await fetch(`${apiUrl}/api/friend/friends/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${token}`,  // 👈 send token here
+      },
+    });
+
+    if (!resp.ok) {
+      throw new Error("Failed to fetch friends");
+    }
+
     const data = await resp.json();
     setFriends(data.friends);
   }
@@ -22,8 +35,13 @@ const ChatList = () => {
   // Search users
   async function handleSearch() {
     if (searchtext.trim() === "") return;
-    const resp = await fetch(
-      `${apiUrl}/api/friend/search?username=${searchtext}&currentUserId=${currentUserId}`
+    const token = JSON.parse(localStorage.getItem('token'));
+    const resp = await fetch(`${apiUrl}/api/friend/search?username=${searchtext}&currentUserId=${currentUserId}` ,{
+        headers:{ 
+          "Content-Type":"application/json",
+          Authorization:`JWT ${token}`
+        }
+      }
     );
     const data = await resp.json();
     setSearchResult(data.users);
@@ -31,9 +49,12 @@ const ChatList = () => {
 
   // Add friend
   async function handleAddFriend(friendId) {
+    const token = JSON.parse(localStorage.getItem('token'));
     await fetch(`${apiUrl}/api/friend/friend-add`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",
+        Authorization:`JWT ${token}`
+       },
       body: JSON.stringify({ userId: currentUserId, friendId }),
     });
     fetchFriends();
@@ -41,9 +62,12 @@ const ChatList = () => {
 
   // Start chat
   async function handleStartChat(friendId) {
+    let token = JSON.parse(localStorage.getItem('token'))
     const resp = await fetch(`${apiUrl}/api/conversation/conversations`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",
+        Authorization : `JWT ${token}`
+       },
       body: JSON.stringify({ userId: currentUserId, friendId }),
     });
     const conversation = await resp.json();
@@ -52,10 +76,14 @@ const ChatList = () => {
 
   // Remove friend
   async function handleRemoveFriend(friendId) {
+    let token = JSON.parse(localStorage.getItem('token'));
     await fetch(`${apiUrl}/api/friend/friend-remove`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: currentUserId, friendId }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${token}`
+      },
+      body: JSON.stringify({ friendId }),
     });
     fetchFriends();
   }
@@ -63,6 +91,7 @@ const ChatList = () => {
   // Logout
   function handleLogout() {
     localStorage.removeItem("user");
+  localStorage.removeItem("token");
     navigate("/");
   }
 
@@ -75,11 +104,11 @@ const ChatList = () => {
     <div className="chatlist-container">
       {/* Header */}
       <header className="chatlist-header">
-  <h1>👋 Welcome, {username}</h1>
-  <button className="logout-btn" onClick={handleLogout}>
-    🚪 Logout
-  </button>
-</header>
+        <h1>👋 Welcome, {username}</h1>
+        <button className="logout-btn" onClick={handleLogout}>
+          🚪 Logout
+        </button>
+      </header>
 
 
       {/* Search */}
